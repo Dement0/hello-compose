@@ -3,6 +3,9 @@ package com.example.hello_compose
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.*
+import androidx.compose.foundation.animation.FlingConfig
+import androidx.compose.foundation.gestures.ScrollableController
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.gesture.scrollorientationlocking.Orientation
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.VectorAssetBuilder
 import androidx.compose.ui.platform.setContent
@@ -30,14 +34,26 @@ import com.example.hello_compose.ui.HellocomposeTheme
 
 
 val artists = listOf(
-        Artist(
-                name = "Bon Jovi",
-                albums = "1 album"
-        ),
-        Artist(
-                name = "David Bowie",
-                albums = "10 albums"
-        )
+    Artist(
+        name = "Bon Jovi",
+        albums = "1 album"
+    ),
+    Artist(
+        name = "David Bowie",
+        albums = "10 albums"
+    ),
+    Artist(
+        name = "Pepe Ga",
+        albums = "0 albums"
+    ),
+    Artist(
+        name = "Mordor",
+        albums = "22 albums"
+    ),
+    Artist(
+        name = "Omega",
+        albums = "2 albums"
+    )
 )
 
 class MainActivity : AppCompatActivity() {
@@ -63,11 +79,12 @@ fun StartApp(content: @Composable () -> Unit) {
 @Composable
 fun SetScreenContent(artists: List<Artist>) {
 //    Border.build()
-    Row(modifier = Modifier
-            .clickable(onClick = { /*TODO*/ })
-            .padding(8.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colors.background)
+    Column(modifier = Modifier
+        .clickable(onClick = { /*TODO*/ })
+        .padding(8.dp)
+        .clip(RoundedCornerShape(16.dp))
+        .wrapContentWidth(align = Alignment.Start)
+        .background(MaterialTheme.colors.background)
     ) {
         artists.forEach { artist ->
             SingerCard(artist = artist)
@@ -77,23 +94,26 @@ fun SetScreenContent(artists: List<Artist>) {
 
 @Composable
 fun SingerCard(
-        modifier: Modifier = Modifier,
-        artist: Artist
+    modifier: Modifier = Modifier,
+    artist: Artist
 ) {
-    Surface(
-            modifier = modifier.preferredSize(64.dp),
-            shape = CircleShape,
-            color = MaterialTheme.colors.onSurface.copy(alpha = 0.3f)
-    ) {
+    Row() {
+        Surface(
+                modifier = modifier.preferredSize(32.dp),
+                shape = CircleShape,
+                color = MaterialTheme.colors.onSurface.copy(alpha = 0.3f),
+                elevation = 4.dp
+        ) {
 
-    }
-    Column(modifier = modifier.padding(8.dp)) {
-        Text(text = artist.name)
-        Text(
-                text = artist.albums,
-                modifier = modifier.wrapContentWidth(),
-                style = MaterialTheme.typography.subtitle2
-        )
+        }
+        Column(modifier = modifier.padding(8.dp)) {
+            Text(text = artist.name)
+            Text(
+                    text = artist.albums,
+                    modifier = modifier.wrapContentWidth(),
+                    style = MaterialTheme.typography.subtitle2
+            )
+        }
     }
 }
 
