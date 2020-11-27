@@ -28,12 +28,24 @@ import com.example.hello_compose.domain.Artist
 import com.example.hello_compose.ui.Border
 import com.example.hello_compose.ui.HellocomposeTheme
 
+
+val artists = listOf(
+        Artist(
+                name = "Bon Jovi",
+                albums = "1 album"
+        ),
+        Artist(
+                name = "David Bowie",
+                albums = "10 albums"
+        )
+)
+
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             StartApp {
-                SetScreenContent()
+                SetScreenContent(artists = artists)
             }
         }
     }
@@ -49,53 +61,44 @@ fun StartApp(content: @Composable () -> Unit) {
 }
 
 @Composable
-fun SetScreenContent() {
+fun SetScreenContent(artists: List<Artist>) {
 //    Border.build()
-    SingerCard(
-        artist = Artist(
-            name = "David Bowie",
-            albums = "10 albums"
-        )
-    )
-//    SingerCard(
-//        artist = Artist(
-//            name = "Bon Jovi",
-//            albums = "1 album"
-//        )
-//    )
+    Row(modifier = Modifier
+            .clickable(onClick = { /*TODO*/ })
+            .padding(8.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(MaterialTheme.colors.background)
+    ) {
+        artists.forEach { artist ->
+            SingerCard(artist = artist)
+        }
+    }
 }
 
 @Composable
 fun SingerCard(
-    modifier: Modifier = Modifier,
-    artist: Artist
+        modifier: Modifier = Modifier,
+        artist: Artist
 ) {
-    Row(modifier = modifier
-        .clickable(onClick = { /*TODO*/})
-        .padding(8.dp)
-        .clip(RoundedCornerShape(16.dp))
-        .background(MaterialTheme.colors.background)
-    ) {
-        Surface(
+    Surface(
             modifier = modifier.preferredSize(64.dp),
             shape = CircleShape,
             color = MaterialTheme.colors.onSurface.copy(alpha = 0.3f)
-        ) {
+    ) {
 
-        }
-        Column(modifier = modifier.padding(8.dp).align(Alignment.CenterVertically)) {
-            Text(text = artist.name)
-            Text(
+    }
+    Column(modifier = modifier.padding(8.dp)) {
+        Text(text = artist.name)
+        Text(
                 text = artist.albums,
                 modifier = modifier.wrapContentWidth(),
                 style = MaterialTheme.typography.subtitle2
-            )
-        }
+        )
     }
 }
 
 @Preview(showBackground = true, name = "Text Preview")
 @Composable
 fun DefaultPreview() {
-    SetScreenContent()
+    SetScreenContent(artists = artists)
 }
