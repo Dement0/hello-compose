@@ -1,26 +1,25 @@
 package com.example.hello_compose
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.ExperimentalLazyDsl
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.setContent
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.ui.tooling.preview.Preview
 import com.example.hello_compose.domain.Artist
 import com.example.hello_compose.ui.HellocomposeTheme
 
@@ -49,7 +48,6 @@ val artists = listOf(
 )
 
 class MainActivity : AppCompatActivity() {
-    @ExperimentalLazyDsl
     @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,7 +69,6 @@ fun StartApp(content: @Composable () -> Unit) {
 }
 
 @ExperimentalMaterialApi
-@ExperimentalLazyDsl
 @Composable
 fun SetScreenContent(artists: List<Artist>) {
     val listState = rememberLazyListState()
@@ -102,7 +99,7 @@ fun SingerCard(
 ) {
     Row() {
         Surface(
-            modifier = modifier.preferredSize(32.dp),
+            modifier = modifier.requiredSize(32.dp),
             shape = CircleShape,
             color = MaterialTheme.colors.onSurface.copy(alpha = 0.3f),
             elevation = 4.dp
@@ -110,7 +107,9 @@ fun SingerCard(
 
         }
         Column(
-            modifier = modifier.fillMaxWidth().padding(horizontal = 8.dp)
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp)
         ) {
             Text(text = artist.name)
             Text(
@@ -122,10 +121,11 @@ fun SingerCard(
     }
 }
 
-@ExperimentalLazyDsl
 @ExperimentalMaterialApi
 @Preview(showBackground = true, name = "Text Preview")
 @Composable
 fun DefaultPreview() {
-    SetScreenContent(artists = artists)
+    StartApp {
+        SetScreenContent(artists = artists)
+    }
 }
